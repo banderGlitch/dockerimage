@@ -1,0 +1,1 @@
+Decimal provides intent-based infrastructure for enterprises, automating seamless, gasless, and bridgeless high-frequency multi-chain transactions across EVM, non-EVM, BTC, and private chains.

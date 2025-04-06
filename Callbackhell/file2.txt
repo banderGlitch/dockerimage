@@ -1,0 +1,1 @@
+Instead of educating the clients on the complexities of the Web3 technology, Decimal is designed to eliminate the complexities of blockchain technology entirely for the users. By removing technical barriers such as gas management, cross-chain coordination, and protocol interactions, Decimal creates a seamless DeFi experience for the clients.
