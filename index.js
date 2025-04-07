@@ -2,14 +2,23 @@ import express from 'express';
 import cors from 'cors';
 import verifyToken from './auth.js';
 import jwt from 'jsonwebtoken';
-import { createUser, findUser } from './userService.js';
 import bcrypt from 'bcryptjs';
+import { connect } from './dbConfiguration.js';
+import {
+    createUser,
+    getAllUsers,
+    getUserById,
+    updateUser,
+    deleteUser
+} from './userService.js'
 const JWT_SECRET = "supersecretkey123"
+
 
 
 // Docker CI/CD pipeline 
 
-
+// express rounter 
+const router = express.Router();
 
 const app = express()
 const PORT = 9000;
@@ -18,33 +27,27 @@ const PORT = 9000;
 // Dockerization and CI/CD pipleline 
 
 app.use(cors({
-    origin: 'http://localhost:5173',
-    methods: ['GET', 'POST', 'PUT', 'DELETE']
+    // origin: 'http://localhost:5173',
+    // methods: ['GET', 'POST', 'PUT', 'DELETE']
 }))
 
-
+// db connection 
+connect()
+//
 app.use(express.json());
 
-// after that we define the routes over here 
-// what is Middleware? 
-// How the request-response cycle works
-// Writing custom middleware 
-// Built in middleware: express.json(), express.static()
-// Third-party middleware: cors, morgon, body-parser
-// reating RESTful routes (GET, POST, PUT, DELETE)
-// status , 200 , 400, 4000
-// what is middleware ? 
-// middleware is a function that has access to the request, response and next objects in the express pipline
-
-// (req, res, next) => {
-//         Do something...
-//  next();
-//   }
 
 
 app.get('/', (req, res) => {
     res.send("Server is running")
 })
+
+
+app.use(router.post('/create', createUser))
+app.use(router.get('/getuser', getAllUsers))
+app.use(router.get('/:id', getUserById))
+app.use(router.put('/:id', updateUser))
+app.use(router.delete('/:id', deleteUser))
 
 
 
@@ -76,7 +79,7 @@ app.post('/login', async (req, res) => {
 
 app.get('/profile', verifyToken, (req, res) => {
     res.json({ message: `Welcome ${req.user.username}`, user: req.user });
-  });
+});
 
 
 

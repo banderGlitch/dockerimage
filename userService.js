@@ -1,33 +1,59 @@
-import { readFile, writeFile } from 'fs/promises';
 
-const DB_FILE = './db.json'
+import User from './models/User.js';
 
-// get the file
 
-export const getUsers = async () => {
-    const data = await readFile(DB_FILE, 'utf-8');
-    return JSON.parse(data).users;
+
+export const getAllUsers = async () => {
+    return await User.find(); 
+    
 }
 
-// save file 
+export const  createUser = async (req, res) => {
+    try {
+        const user = await User.create(req.body);
+        res.status(201).json(user);
+    } catch (err) {
+        res.status(500).json({message: err.message})
+    }
 
-export const saveUsers = async (users) => {
-    await writeFile(DB_FILE, JSON.stringify({ users }, null, 2));
 }
 
-// find user
+// get User by id
 
-export const findUser = async (username) => {
-    const users = await getUsers();
-    return users.find(u => u.username === username);
+export const getUserById = async (req , res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) return res.status(404).json({message:"User not found"})
+        res.json(user)
+    } catch (err) {
+        res.status(500).json({ message : err.message
+        })
+    }
 }
 
-// create user
+export const updateUser = async (req, res) => {
+    try {
+        const user = await User.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true, runValidators: true }
+        )
+        if (!user) return res.status(404).json({message: "User not found"})
+        res.status(200).json({message: `user updated succefully ${user}`})
 
-export const createUser = async (user) => {
-    const users = await getUsers();
-    users.push(user)
-    await saveUsers(users)
-    return user
+    } catch(err) {
+        res.status(500).json({message : err.message})
+    }
+
 }
+
+export const deleteUser = async (req, res) => {
+    try {
+      const user = await User.findByIdAndDelete(req.params.id);
+      if (!user) return res.status(404).json({ message: "User not found" });
+      res.json({ message: "User deleted" });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  };
 
