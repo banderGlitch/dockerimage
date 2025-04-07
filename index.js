@@ -1,9 +1,12 @@
 import express from 'express';
+import fs from 'fs';
+import path from 'path';
 import cors from 'cors';
 import verifyToken from './auth.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { connect } from './dbConfiguration.js';
+import morgan from 'morgan';
 import {
     createUser,
     getAllUsers,
@@ -12,6 +15,14 @@ import {
     deleteUser
 } from './userService.js'
 const JWT_SECRET = "supersecretkey123"
+
+
+
+
+const accessLogStream = fs.createWriteStream(
+    path.join(process.cwd(), 'access.log'),
+    { flags: 'a' } // append mode
+  );
 
 
 
@@ -34,6 +45,9 @@ app.use(cors({
 // db connection 
 connect()
 //
+// Add morgan middleware
+app.use(morgan('combined', { stream: accessLogStream }));
+app.use(morgan('dev'));
 app.use(express.json());
 
 
@@ -45,9 +59,9 @@ app.get('/', (req, res) => {
 
 app.use(router.post('/create', createUser))
 app.use(router.get('/getuser', getAllUsers))
-app.use(router.get('/:id', getUserById))
-app.use(router.put('/:id', updateUser))
-app.use(router.delete('/:id', deleteUser))
+app.use(router.get('/getuserbyId/:id', getUserById))
+app.use(router.put('/updateuserbyId/:id', updateUser))
+app.use(router.delete('/deleteuserbyId/:id', deleteUser))
 
 
 
