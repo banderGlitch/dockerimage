@@ -14,11 +14,6 @@ let refreshTokens = [];
 
 
 export const register = async (req, res) => {
-    const errors = validationResult(req)
-
-    if (!errors.isEmpty()){
-        return res.status(400).json({errors: errors.array() })
-    }
 
     try {
         const { name,  email, username, password } = req.body
@@ -41,11 +36,7 @@ export const register = async (req, res) => {
 
 
 export const login = async (req , res) => {
-    const errors = validationResult(req)
-
-    if (!errors.isEmpty())
-        return res.status(400).json({errors: errors.array()})
-  
+ 
     try {
         const { email, password } = req.body
         const user = await User.findOne({ email: email });

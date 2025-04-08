@@ -1,5 +1,9 @@
 import { body } from "express-validator";
 
+
+// Would you like to switch to Zod instead
+// For more functionality like this 
+
 export const registerValidator = [
     body('email')
         .isEmail()

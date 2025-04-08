@@ -6,6 +6,7 @@ import verifyToken from './auth.js';
 import { connect } from './dbConfiguration.js';
 import morgan from 'morgan';
 import { registerValidator , loginValidator } from './middlewares/validators.js';
+import  validateRequest  from './middlewares/validateRequest.js'; 
 import { register, login } from './authRoutes.js';
 
 
@@ -56,8 +57,8 @@ app.get('/', (req, res) => {
 // app.use(router.delete('/deleteuserbyId/:id', deleteUser))
 
 // register
-app.use(router.post('/register',registerValidator, register))
-app.use(router.post('/login', loginValidator, login))
+app.use(router.post('/register',registerValidator,validateRequest, register))
+app.use(router.post('/login', loginValidator,validateRequest, login))
 
 
 

@@ -51,3 +51,8 @@
 ::1 - - [08/Apr/2025:11:59:51 +0000] "POST /login HTTP/1.1" 200 466 "-" "PostmanRuntime/7.43.3"
 ::1 - - [08/Apr/2025:11:59:55 +0000] "POST /login HTTP/1.1" 200 466 "-" "PostmanRuntime/7.43.3"
 ::1 - - [08/Apr/2025:11:59:58 +0000] "POST /login HTTP/1.1" 200 466 "-" "PostmanRuntime/7.43.3"
+::1 - - [08/Apr/2025:12:03:31 +0000] "POST /register HTTP/1.1" 400 198 "-" "PostmanRuntime/7.43.3"
+::1 - - [08/Apr/2025:12:03:46 +0000] "POST /register HTTP/1.1" 400 32 "-" "PostmanRuntime/7.43.3"
+::1 - - [08/Apr/2025:12:03:51 +0000] "POST /register HTTP/1.1" 400 32 "-" "PostmanRuntime/7.43.3"
+::1 - - [08/Apr/2025:12:04:00 +0000] "POST /register HTTP/1.1" 400 198 "-" "PostmanRuntime/7.43.3"
+::1 - - [08/Apr/2025:12:04:07 +0000] "POST /register HTTP/1.1" 400 32 "-" "PostmanRuntime/7.43.3"
