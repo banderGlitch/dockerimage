@@ -5,7 +5,7 @@ import cors from 'cors';
 import verifyToken from './auth.js';
 import { connect } from './dbConfiguration.js';
 import morgan from 'morgan';
-import { createUser, getAllUsers, getUserById, updateUser, deleteUser } from './userService.js'
+import { registerValidator , loginValidator } from './middlewares/validators.js';
 import { register, login } from './authRoutes.js';
 
 
@@ -56,8 +56,8 @@ app.get('/', (req, res) => {
 // app.use(router.delete('/deleteuserbyId/:id', deleteUser))
 
 // register
-app.use(router.post('/register',register))
-app.use(router.post('/login',login))
+app.use(router.post('/register',registerValidator, register))
+app.use(router.post('/login', loginValidator, login))
 
 
 
