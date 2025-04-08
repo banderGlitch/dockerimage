@@ -3,18 +3,10 @@ import fs from 'fs';
 import path from 'path';
 import cors from 'cors';
 import verifyToken from './auth.js';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
 import { connect } from './dbConfiguration.js';
 import morgan from 'morgan';
-import {
-    createUser,
-    getAllUsers,
-    getUserById,
-    updateUser,
-    deleteUser
-} from './userService.js'
-const JWT_SECRET = "supersecretkey123"
+import { createUser, getAllUsers, getUserById, updateUser, deleteUser } from './userService.js'
+import { register, login } from './authRoutes.js';
 
 
 
@@ -57,38 +49,42 @@ app.get('/', (req, res) => {
 })
 
 
-app.use(router.post('/create', createUser))
-app.use(router.get('/getuser', getAllUsers))
-app.use(router.get('/getuserbyId/:id', getUserById))
-app.use(router.put('/updateuserbyId/:id', updateUser))
-app.use(router.delete('/deleteuserbyId/:id', deleteUser))
+// app.use(router.post('/create', createUser))
+// app.use(router.get('/getuser', getAllUsers))
+// app.use(router.get('/getuserbyId/:id', getUserById))
+// app.use(router.put('/updateuserbyId/:id', updateUser))
+// app.use(router.delete('/deleteuserbyId/:id', deleteUser))
+
+// register
+app.use(router.post('/register',register))
+app.use(router.post('/login',login))
 
 
 
-// register api 
-app.post('/register', async (req, res) => {
-    const { username, password } = req.body
-    const existing = await findUser(username);
-    if (existing) return res.status(400).json({ message: 'User already exists' })
-    const hashed = await bcrypt.hash(password, 10);
-    const user = { id: Date.now(), username, password: hashed };
-    await createUser(user);
-    res.status(201).json({ id: user.id, username: user.username });
+// // register api 
+// app.post('/register', async (req, res) => {
+//     const { username, password } = req.body
+//     const existing = await findUser(username);
+//     if (existing) return res.status(400).json({ message: 'User already exists' })
+//     const hashed = await bcrypt.hash(password, 10);
+//     const user = { id: Date.now(), username, password: hashed };
+//     await createUser(user);
+//     res.status(201).json({ id: user.id, username: user.username });
 
-})
+// })
 
-// login api 
+// // login api 
 
-app.post('/login', async (req, res) => {
-    const { username, password } = req.body;
-    const user = await findUser(username);
-    if (!user) return res.status(400).json({ message: "User not found" });
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.status(401).json({ message: "Invalid password" });
-    const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token });
+// app.post('/login', async (req, res) => {
+//     const { username, password } = req.body;
+//     const user = await findUser(username);
+//     if (!user) return res.status(400).json({ message: "User not found" });
+//     const match = await bcrypt.compare(password, user.password);
+//     if (!match) return res.status(401).json({ message: "Invalid password" });
+//     const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: '1h' });
+//     res.json({ token });
 
-})
+// })
 
 
 app.get('/profile', verifyToken, (req, res) => {

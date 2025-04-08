@@ -6,7 +6,6 @@ import User from './models/User.js';
 export const getAllUsers = async (req, res) => {
     try {
         const users = await User.find();
-        console.log("users",users)
         if (!users) return res.status(404).json({message: "User not found!"})
         res.status(200).json(users)
     }

@@ -10,7 +10,14 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    age: Number
+    password: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    age: {
+        type: Number
+    }
 }, { timestamps: true })
 
 const User = mongoose.model('User', userSchema)
