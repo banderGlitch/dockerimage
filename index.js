@@ -7,7 +7,7 @@ import { connect } from './dbConfiguration.js';
 import morgan from 'morgan';
 import { registerValidator , loginValidator } from './middlewares/validators.js';
 import  validateRequest  from './middlewares/validateRequest.js'; 
-import { register, login } from './authRoutes.js';
+import { register, login, refresh_Token } from './authRoutes.js';
 
 
 
@@ -38,6 +38,7 @@ app.use(cors({
 connect()
 //
 // Add morgan middleware
+// Used for logging the logs
 app.use(morgan('combined', { stream: accessLogStream }));
 app.use(morgan('dev'));
 app.use(express.json());
@@ -52,14 +53,12 @@ app.get('/', (req, res) => {
 // register
 app.use(router.post('/register',registerValidator,validateRequest, register))
 app.use(router.post('/login', loginValidator,validateRequest, login))
-aap.use(router.delete('/id', verifyToken))
+app.use(router.post('/refresh-token', refresh_Token))
+app.use(router.delete('/id', verifyToken))
 
 app.get('/profile', verifyToken, (req, res) => {
     res.json({ message: `Welcome ${req.user.username}`, user: req.user });
 });
-
-
-
 
 
 app.listen(PORT, () => {
