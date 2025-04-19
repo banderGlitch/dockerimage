@@ -11,7 +11,6 @@ import { register, login } from './authRoutes.js';
 
 
 
-
 const accessLogStream = fs.createWriteStream(
     path.join(process.cwd(), 'access.log'),
     { flags: 'a' } // append mode
@@ -50,43 +49,10 @@ app.get('/', (req, res) => {
 })
 
 
-// app.use(router.post('/create', createUser))
-// app.use(router.get('/getuser', getAllUsers))
-// app.use(router.get('/getuserbyId/:id', getUserById))
-// app.use(router.put('/updateuserbyId/:id', updateUser))
-// app.use(router.delete('/deleteuserbyId/:id', deleteUser))
-
 // register
 app.use(router.post('/register',registerValidator,validateRequest, register))
 app.use(router.post('/login', loginValidator,validateRequest, login))
-
-
-
-// // register api 
-// app.post('/register', async (req, res) => {
-//     const { username, password } = req.body
-//     const existing = await findUser(username);
-//     if (existing) return res.status(400).json({ message: 'User already exists' })
-//     const hashed = await bcrypt.hash(password, 10);
-//     const user = { id: Date.now(), username, password: hashed };
-//     await createUser(user);
-//     res.status(201).json({ id: user.id, username: user.username });
-
-// })
-
-// // login api 
-
-// app.post('/login', async (req, res) => {
-//     const { username, password } = req.body;
-//     const user = await findUser(username);
-//     if (!user) return res.status(400).json({ message: "User not found" });
-//     const match = await bcrypt.compare(password, user.password);
-//     if (!match) return res.status(401).json({ message: "Invalid password" });
-//     const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: '1h' });
-//     res.json({ token });
-
-// })
-
+aap.use(router.delete('/id', verifyToken))
 
 app.get('/profile', verifyToken, (req, res) => {
     res.json({ message: `Welcome ${req.user.username}`, user: req.user });

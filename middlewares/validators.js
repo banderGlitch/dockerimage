@@ -1,8 +1,10 @@
-import { body } from "express-validator";
+import { body, query } from "express-validator";
 
 
 // Would you like to switch to Zod instead
 // For more functionality like this 
+
+export const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?#&])[A-Za-z\d@$!%*?#&]{8,}$/;
 
 export const registerValidator = [
     body('email')
@@ -16,10 +18,19 @@ export const registerValidator = [
         .withMessage('Username must be at least 3 characters'),
 
     body('password')
-        .isLength({ min: 6 })
-        .withMessage('Password must be at least 6 characters'),
+        .matches(strongPasswordRegex).withMessage(
+            'Password must be at least 8 characters long and includes upppercase, lowercase, number, and special character'
+        )
 
 ];
+
+
+
+export const searchUserValidator = [
+    query('search')
+      .optional()
+      .isString().withMessage('Search must be a string'),
+  ]
 
 
 export const loginValidator = [
